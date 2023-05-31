@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis . org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.zz.blibili.mapper.VideoMapper">
+    <insert id="addVideos" parameterType="com.zz.blibili.entity.Video" useGeneratedKeys="true" keyProperty="id">
+        insert into t_video(id, userId, url, thumbnail, title, `type`,
+                            duration,area, description, createTime)
+        values(#{id}, #{userId}, #{url}, #{thumbnail}, #{title}, #{type},
+               #{duration}, #{area}, #{description}, #{createTime})
+    </insert>
+
+    <insert id="batchAddVideoTags" parameterType="java.util.List">
+        insert into t_video_tag(videoId, tagId, createTime)
+        values
+        <foreach collection="videoTagList" item="videoTag" separator=",">
+            (#{videoTag.videoId}, #{videoTag.tagId}, #{videoTag.createTime})
+        </foreach>
+    </insert>
+    <insert id="addVideoView"></insert>
+
+    <select id="pageCountVideo" parameterType="map" resultType="java.lang.Integer">
+        select count(1) from t_video
+        where 1 = 1
+        <if test="area != null and area != '' ">
+            and area = #{area}
+        </if>
+    </select>
+
+    <select id="pageListVideo" parameterType="map" resultType="com.zz.blibili.entity.Video">
+        select * from t_video
+        where 1 = 1
+        <if test="area != null and area != '' ">
+            and area = #{area}
+        </if>
+        order by id desc limit #{start}, #{limit}
+    </select>
+
+    <select id="pageCountVideoComments" parameterType="java.util.Map" resultType="java.lang.Integer">
+        select
+            count(1)
+        from
+            t_video_comment
+        where
+            videoId = #{videoId}
+          and rootId is null
+    </select>
+
+    <select id="pageListVideoComments" parameterType="java.util.Map" resultType="com.zz.blibili.entity.VideoComment">
+        select
+            *
+        from
+            t_video_comment
+        where
+            videoId = #{videoId}
+          and rootId is null
+        order by id desc
+            limit #{start}, #{limit}
+    </select>
+
+    <select id="batchGetVideoCommentsByRootIds" parameterType="java.util.List" resultType="com.zz.blibili.entity.VideoComment">
+        select
+        *
+        from
+        t_video_comment
+        where
+        rootId in
+        <foreach collection="rootIdList" item="rootId" open="(" close=")" separator=",">
+            #{rootId}
+        </foreach>
+        order by id
+    </select>
+    <select id="getVideoById" resultType="com.zz.blibili.entity.Video"></select>
+    <select id="getVideoView" resultType="com.zz.blibili.entity.VideoView">
+
+    </select>
+    <select id="getVideoViewCounts" resultType="java.lang.Integer"></select>
+
+
+</mapper>

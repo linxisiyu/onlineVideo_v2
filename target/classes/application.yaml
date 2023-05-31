@@ -1,0 +1,55 @@
+#默认端口
+server:
+  port: 8080
+
+spring:
+  #数据库配置
+  datasource:
+    type: com.zaxxer.hikari.HikariDataSource    # 配置数据源类型
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/bilibili?characterEncoding=utf-8&useSSL=false
+    username: root
+    password: admin
+  #关闭热部署
+  devtools:
+    livereload:
+      enabled: false
+
+  #kafka配置
+  kafka:
+    bootstrap-servers: hadoop102:9092,hadoop103:9092,hadoop104:9092
+    consumer:
+      group-id: moments            #消费者组id
+      enable-auto-commit: true    #是否自动提交
+      auto-commit-interval: 3000  #自动提交的频率
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+
+  # redis配置
+  redis:
+    host: hadoop102
+    port: 6379
+  elasticsearch:
+    url: loclhost
+
+
+#配置mybatis-plus的日志打印
+mybatis-plus:
+  configuration:
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl #日志输出
+
+#fastdfs
+fdfs:
+  tracker-list: 39.107.54.180:22122,39.108.54.180:22122,
+  connect-timeout: 600
+  http:
+    storage-addr=http://39:54:180:8888/group1/
+
+baidu:
+  develop:
+    clientId: sbjRmx1asqedasd
+    clientSecret: asdsadasd
+  auth:
+    url: https://app....
+  slitBody:
+    url: https://...

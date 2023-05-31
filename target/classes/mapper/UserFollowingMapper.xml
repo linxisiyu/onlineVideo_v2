@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis . org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.zz.blibili.mapper.UserFollowingMapper">
+    <select id="getByType" resultType="com.zz.blibili.entity.FollowingGroup">
+        select * from t_following_group where `type` = #{type}
+    </select>
+
+    <select id="getGroupById" resultType="com.zz.blibili.entity.FollowingGroup">
+        select * from t_following_group where id = #{id}
+    </select>
+
+    <delete id="deleteUserFollowing">
+        delete from t_user_following
+        where userId = #{userId} and followingId = #{followingId}
+    </delete>
+
+    <insert id="addUserFollowding" parameterType="com.zz.blibili.entity.UserFollowing">
+        insert into t_user_following( userId, followingId, groupId, createTime)
+        values(#{userId}, #{followingId}, #{groupId}, #{createTime})
+    </insert>
+
+    <select id="getUserFolloings" resultType="com.zz.blibili.entity.UserFollowing">
+        select * from t_user_following where userId = #{userId}
+    </select>
+
+    <select id="getUserFans" resultType="com.zz.blibili.entity.UserFollowing">
+        select * from t_user_following
+        where followingId = #{followingId}
+    </select>
+
+    <select id="getUserFollowings" resultType="com.zz.blibili.entity.UserFollowing">
+        select * from t_user_following
+        where userId = #{userId}
+    </select>
+</mapper>
